@@ -1,64 +1,131 @@
 <!doctype html>
 <html lang="bn">
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2854837492820194"
-     crossorigin="anonymous"></script>
-<meta name="google-adsense-account" content="ca-pub-2854837492820194">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Key Gateway</title>
+
+<!-- AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2854837492820194"
+crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="ca-pub-2854837492820194">
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial,sans-serif;background:#0f172a;color:#fff;min-height:100vh;display:grid;place-items:center}
-.card{width:min(92%,460px);background:#1e293b;border-radius:22px;padding:28px;text-align:center;box-shadow:0 18px 50px #0006}
-h1{margin:0 0 8px;font-size:28px}.muted{color:#cbd5e1}.step{font-size:18px;margin:20px 0}
-.timer{font-size:48px;font-weight:800;margin:22px}.btn{border:0;border-radius:12px;padding:13px 24px;font-size:17px;font-weight:700;background:#64748b;color:#fff;cursor:not-allowed}.btn.ready{background:#22c55e;cursor:pointer}
-.ad{margin:20px 0;padding:18px;border:1px dashed #64748b;border-radius:12px;color:#cbd5e1}
-.key{font-size:32px;font-weight:900;letter-spacing:3px;background:#0f172a;border-radius:12px;padding:18px;margin:20px 0}
-.hidden{display:none}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0f172a;
+  color:white;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.card{
+  width:90%;
+  max-width:450px;
+  background:#1e293b;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+}
+.timer{
+  font-size:55px;
+  font-weight:bold;
+  margin:25px;
+}
+button{
+  padding:14px 28px;
+  border:0;
+  border-radius:10px;
+  font-size:18px;
+  font-weight:bold;
+}
+button:disabled{
+  opacity:.5;
+}
+.key{
+  font-size:35px;
+  font-weight:bold;
+  margin:25px;
+}
 </style>
 </head>
-<body>
-<main class="card">
-  <section id="gateway">
-    <h1>Continue</h1>
-    <p class="muted">ধাপ <span id="step">1</span> / 6</p>
-    <div class="ad">এখানে বৈধ বিজ্ঞাপনের code বসাতে পারো</div>
-    <div class="step">পরবর্তী ধাপে যেতে অপেক্ষা করুন</div>
-    <div class="timer" id="timer">15</div>
-    <button class="btn" id="next" disabled>অপেক্ষা করুন</button>
-  </section>
 
-  <section id="result" class="hidden">
-    <h1>Your Key</h1>
-    <p class="muted">৬টি ধাপ সম্পন্ন হয়েছে।</p>
-    <div class="key">1122</div>
-    <p class="muted">এই Key-টি সবার জন্য একই।</p>
-  </section>
-</main>
+<body>
+
+<div class="card">
+
+<div id="gateway">
+<h1>Continue</h1>
+<p>ধাপ <span id="step">1</span> / 6</p>
+
+<p>বিজ্ঞাপন এখানে স্বাভাবিকভাবে প্রদর্শিত হতে পারে।</p>
+
+<div class="timer" id="timer">15</div>
+
+<button id="next" disabled>অপেক্ষা করুন</button>
+</div>
+
+<div id="result" style="display:none">
+<h1>Your Key</h1>
+<p>৬টি ধাপ সম্পন্ন হয়েছে।</p>
+<div class="key">1122</div>
+</div>
+
+</div>
+
 <script>
-let current=1, seconds=15;
-const timer=document.getElementById('timer'), next=document.getElementById('next'), step=document.getElementById('step');
-function run(){
-  seconds=15; timer.textContent=seconds; next.disabled=true; next.classList.remove('ready'); next.textContent='অপেক্ষা করুন';
-  const interval=setInterval(()=>{
-    seconds--; timer.textContent=seconds;
-    if(seconds<=0){
-      clearInterval(interval);
-      next.disabled=false; next.classList.add('ready');
-      next.textContent=current===6?'Key দেখুন':'Continue';
-    }
-  },1000);
+let step=1;
+let time=15;
+
+const timer=document.getElementById("timer");
+const button=document.getElementById("next");
+const stepText=document.getElementById("step");
+
+function startTimer(){
+
+time=15;
+timer.textContent=time;
+button.disabled=true;
+button.textContent="অপেক্ষা করুন";
+
+let countdown=setInterval(function(){
+
+time--;
+timer.textContent=time;
+
+if(time<=0){
+
+clearInterval(countdown);
+
+button.disabled=false;
+button.textContent=step===6?"Key দেখুন":"Continue";
+
 }
-next.addEventListener('click',()=>{
-  if(next.disabled) return;
-  if(current===6){
-    document.getElementById('gateway').classList.add('hidden');
-    document.getElementById('result').classList.remove('hidden');
-    return;
-  }
-  current++; step.textContent=current; run();
-});
-run();
+
+},1000);
+
+}
+
+button.onclick=function(){
+
+if(step===6){
+
+document.getElementById("gateway").style.display="none";
+document.getElementById("result").style.display="block";
+return;
+
+}
+
+step++;
+stepText.textContent=step;
+startTimer();
+
+};
+
+startTimer();
 </script>
+
 </body>
 </html>
